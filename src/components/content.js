@@ -83,7 +83,6 @@ class Content extends React.Component {
     super(props)
     this.tmp = {}
     this.tmp.compositions = 0
-    this.tmp.forces = 0
   }
 
   /**
@@ -354,8 +353,11 @@ class Content extends React.Component {
   onCompositionEnd = (event) => {
     if (!this.isInEditor(event.target)) return
 
-    this.tmp.forces++
     const count = this.tmp.compositions
+
+    if (event.data === '') {
+      this.forceUpdate()
+    }
 
     // The `count` check here ensures that if another composition starts
     // before the timeout has closed out this one, we will abort unsetting the
@@ -839,7 +841,6 @@ class Content extends React.Component {
     return (
       <div
         data-slate-editor
-        key={this.tmp.forces}
         ref={this.ref}
         data-key={document.key}
         contentEditable={!readOnly}
